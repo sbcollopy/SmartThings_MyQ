@@ -1,5 +1,36 @@
 # Changelog
 
+## 4.1.2 (2021-10-25)
+
+### Added
+ - Added ability to specify redirect auth server
+
+ ### Changed
+ - Changed default redirect auth URL to https
+
+## 4.1.1 (2021-09-30)
+
+### Fixed
+ - Fixed logic where refresh was happening too frequently
+
+### Changed
+ - Added clearer error messaging (MyQ command errors are now passed straight through)
+
+## 4.1.0 (2021-09-24)
+
+### Added
+ - Added full oauth support within the SmartApp
+
+## 4.0.1 (2021-09-12)
+
+### Changed
+ - Added more backwards-compatibility for AccountId
+
+## 4.0.0 (2021-09-09)
+
+### Changed
+ - Update to support MyQ API v6
+
 ## 3.1.7 (2021-08-02)
 
 ### Fixed

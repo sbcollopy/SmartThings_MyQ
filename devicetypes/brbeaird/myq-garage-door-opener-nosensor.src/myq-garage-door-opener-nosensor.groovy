@@ -14,7 +14,7 @@
  *
  */
 metadata {
-	definition (name: "MyQ Garage Door Opener-NoSensor", namespace: "brbeaird", author: "Brian Beaird", vid: "generic-contact-4", ocfdevicetype: "oic.d.garagedoor", mnmn: "SmartThings") {
+	definition (name: "MyQ Garage Door Opener-NoSensor", namespace: "brbeaird", author: "Brian Beaird", ocfDeviceType: "oic.d.garagedoor", vid: "9a894a1f-5648-3799-ab9f-4a157697ef5a", mnmn: "SmartThingsCommunity") {
 		capability "Door Control"
 		capability "Garage Door Control"
         capability "Actuator"
@@ -24,6 +24,7 @@ metadata {
         attribute "OpenButton", "string"
         attribute "CloseButton", "string"
         attribute "myQDeviceId", "string"
+        attribute "myQAccountId", "string"
 
         command "open"
         command "close"
@@ -58,20 +59,20 @@ metadata {
 
 def open()  {
     openPrep()
-    parent.sendCommand(getMyQDeviceId(), "open")
+    parent.sendDoorCommand(getMyQDeviceId(), getMyQAccountId(), "open")
 }
 def close() {
     closePrep()
-    parent.sendCommand(getMyQDeviceId(), "close")
+    parent.sendDoorCommand(getMyQDeviceId(), getMyQAccountId(), "close")
 }
 
 def sendOpen()  {
     openPrep()
-    parent.sendCommand(getMyQDeviceId(), "open")
+    parent.sendDoorCommand(getMyQDeviceId(), getMyQAccountId(),"open")
 }
 def sendClose() {
     closePrep()
-    parent.sendCommand(getMyQDeviceId(), "close")
+    parent.sendDoorCommand(getMyQDeviceId(), getMyQAccountId(),"close")
 }
 
 def openPrep(){
@@ -102,9 +103,18 @@ def getMyQDeviceId(){
     }
 }
 
-def updateMyQDeviceId(Id) {
-	log.debug "Setting MyQID to ${Id}"
+def getMyQAccountId(){
+    if (device.currentState("myQAccountId")?.value)
+    	return device.currentState("myQAccountId").value
+	else{
+        return parent.getDefaultAccountId()
+    }
+}
+
+def updateMyQDeviceId(Id, account) {
+	log.debug "Setting MyQID to ${Id}, accountId to ${account}"
     sendEvent(name: "myQDeviceId", value: Id, display: true , displayed: true)
+    sendEvent(name: "myQAccountId", value: account, display: true , displayed: true)
 }
 
 def log(msg){
@@ -112,5 +122,5 @@ def log(msg){
 }
 
 def showVersion(){
-	return "3.2.0"
+	return "4.0.1"
 }
